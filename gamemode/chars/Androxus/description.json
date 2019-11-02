@@ -1,0 +1,8 @@
+{
+	"name":"Androxus",
+	
+	"model":"models/player/gman_high.mdl",
+	"weapon":"weapon_357",
+	
+	"health":100
+}
