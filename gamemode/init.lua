@@ -1,3 +1,5 @@
+paladins = {}
+
 GM.Version = "0.0.1"
 GM.Name = "Paladins"
 GM.Author = "Deleted"
@@ -18,6 +20,3 @@ for _, folder in SortedPairs(folders, true) do
 		if string.match(File, "sv_.*.lua") then include(root .. folder .. "/" .. File) end
 	end
 end
-
-PrintTable(abilities)
-PrintTable(characters)
