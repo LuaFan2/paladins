@@ -7,7 +7,6 @@ function Character:New()
     
     function Character:Description(f)
         local raw = file.Read( f, "LUA" )
-        print(file.Read(f, "LUA"))
         
         obj.description = {}
 		local data = util.JSONToTable(raw)
