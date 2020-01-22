@@ -17,6 +17,12 @@ end
 
 local function F4()
     local characters = net.ReadTable()
+    local materials = {}
+    
+    for k, v in pairs(characters) do
+        materials[v.description.name] = Material(v.description.card)
+    end
+    
     local rows = {
         [1] = {"", "", "", "", "", "", ""},
         [2] = {"", "", "", "", "", "", ""},
@@ -47,7 +53,9 @@ local function F4()
 
     for row = 1, #rows do
         for element = 1, #rows[row] do
-            local elem = vgui.Create("Panel", panel)
+            local elem = vgui.Create("DLabel", panel)
+            elem:SetMouseInputEnabled( true )
+            elem.border = false
             
             local el = rows[row][element]
             local char = el ~= "" and el.description or nil
@@ -57,13 +65,35 @@ local function F4()
             elem:SetPos(ScrW() * 0.135 + offset, row * ScrH() * 0.2)
             elem:SetSize(ScrW() * 0.08, ScrH() * 0.19)
             
+            function elem:Think()
+                if self:IsHovered() then
+                    self.border = true
+                else
+                   self.border = false
+                end
+            end
+            
             function elem:Paint(w, h)
                 if char then
-                    surface.SetDrawColor( 255, 0, 0, 100 )
+                    surface.SetDrawColor( 255, 255, 255, 255 )
+                    surface.SetMaterial(materials[char.name])
+                    surface.DrawTexturedRect(0,0,w,h)
+                    if self.border then
+                        surface.SetDrawColor(Color(255,0,0,255))
+                        surface.DrawOutlinedRect(0,0,w,h)
+                    end
                 else
                     surface.SetDrawColor( 128, 128, 128, 100 )
+                    surface.DrawRect(0, 0, w, h)
                 end
-                surface.DrawRect(0, 0, w, h)
+            end
+            
+            function elem:DoClick()
+                net.Start("paladins.chooseCharacter")
+                net.WriteString(char.name)
+                net.SendToServer()
+                
+                self:Remove()
             end
         end
     end

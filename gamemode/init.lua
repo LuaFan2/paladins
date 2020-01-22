@@ -1,4 +1,5 @@
 paladins = {}
+paladins.players = {}
 
 GM.Version = "0.0.1"
 GM.Name = "Paladins"

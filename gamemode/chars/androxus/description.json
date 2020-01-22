@@ -1,6 +1,7 @@
 {
 	"name":"Androxus",
-	
+	"card":"androxus.jpg",
+    
 	"model":"models/player/gman_high.mdl",
 	"weapon":"weapon_357",
 	

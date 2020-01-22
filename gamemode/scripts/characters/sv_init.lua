@@ -1,3 +1,5 @@
+util.AddNetworkString "paladins.chooseCharacter"
+
 paladins.characters = {}
 
 Character = {}
@@ -13,6 +15,7 @@ function Character:New()
         
         obj.description = {
             ["name"] = data.name,
+            ["card"] = data.card,
             
             ["model"] = data.model,
             ["weapon"] = data.weapon,
@@ -36,3 +39,23 @@ local _, folders = file.Find(root .. "*", "LUA")
 for _, folder in SortedPairs(folders, true) do
 	include(root .. folder .. "/" .. "main.lua")
 end
+
+net.Receive("paladins.chooseCharacter", function(_, ply)
+    local name = net.ReadString()
+    
+    for k, v in pairs(paladins.characters) do
+        if v.description.name == name then
+            paladins.players[ply] = name
+            
+            local desc = v.description
+            
+            ply:StripWeapons()
+            ply:SetHealth(desc.health)
+            ply:SetMaxHealth(desc.health)
+            
+            ply:SetArmor(desc.shield)
+            ply:Give(desc.weapon)
+        end
+    end
+
+end)
