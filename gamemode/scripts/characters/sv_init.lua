@@ -45,6 +45,7 @@ net.Receive("paladins.chooseCharacter", function(_, ply)
     
     for k, v in pairs(paladins.characters) do
         if v.description.name == name then
+            if paladins.players[ply] and paladins.players[ply] == name then return end
             paladins.players[ply] = name
             
             local desc = v.description
