@@ -4,6 +4,14 @@ paladins.characters = {}
 
 Character = {}
 
+function Character.Find(n)
+    for k, v in pairs(paladins.characters) do
+        if v.description.name == name then
+            return v
+        end
+    end
+end
+
 function Character:New()
     local obj = {}
     
@@ -51,6 +59,8 @@ net.Receive("paladins.chooseCharacter", function(_, ply)
             local desc = v.description
             
             ply:StripWeapons()
+            
+            ply:SetModel(desc.model)
             ply:SetHealth(desc.health)
             ply:SetMaxHealth(desc.health)
             

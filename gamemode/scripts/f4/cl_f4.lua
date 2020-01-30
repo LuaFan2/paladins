@@ -55,6 +55,7 @@ local function F4()
         for element = 1, #rows[row] do
             local elem = vgui.Create("DLabel", panel)
             elem:SetMouseInputEnabled( true )
+            elem:SetText("")
             elem.border = false
             
             local el = rows[row][element]
@@ -93,7 +94,7 @@ local function F4()
                 net.WriteString(char.name)
                 net.SendToServer()
                 
-                self:Remove()
+                self:GetParent():Remove()
             end
         end
     end

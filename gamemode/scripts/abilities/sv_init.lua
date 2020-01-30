@@ -1,6 +1,21 @@
+util.AddNetworkString "paladins.useQ"
+util.AddNetworkString "paladins.useE"
+
 paladins.abilities = {}
 
 Ability = {}
+
+function Ability.Find(c)
+    local abilities = {}
+    
+    for k, v in pairs(paladins.abilities) do
+        if v.description.character == c then
+            abilities[#abilities + 1] = v
+        end
+    end
+    
+    return abilities
+end
 
 function Ability:New()
     local obj = {}
@@ -22,11 +37,11 @@ function Ability:New()
     end
 
     function Ability:Q(f)
-        obj.q = q
+        obj.q = f
     end
 
     function Ability:E(f)
-        obj.f = f
+        obj.e = f
     end
     
     function Ability:Register()
@@ -47,3 +62,36 @@ for _, folderc in SortedPairs(folders, true) do
 		include(root .. folder .. "/" .. "main.lua")
 	end
 end
+
+net.Receive("paladins.useQ", function(_, ply)
+    if not paladins.players[ply] then return end
+    local abilities = Ability.Find(paladins.players[ply])
+    
+    for k, ability in pairs(abilities) do
+        if ability.q then
+            ability.q(ply)
+        end
+    end
+end)
+
+function GM:PlayerSwitchFlashlight(ply)
+    if not paladins.players[ply] then return end
+    local abilities = Ability.Find(paladins.players[ply])
+    
+    for k, ability in pairs(abilities) do
+        if ability.f then
+            ability.f(ply)
+        end
+    end
+end
+
+net.Receive("paladins.useE", function(_, ply)
+    if not paladins.players[ply] then return end
+    local abilities = Ability.Find(paladins.players[ply])
+            
+    for k, ability in pairs(abilities) do
+        if ability.e then
+            ability.e(ply)
+        end
+    end
+end)
